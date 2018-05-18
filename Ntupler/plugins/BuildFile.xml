@@ -1,12 +1,16 @@
-<use name="root"/>
 <use name="FWCore/Framework"/>
-<use name="HGCal/CondObjects" />
-<use name="HGCal/Geometry"/>
+<use name="FWCore/PluginManager"/>
+<use name="FWCore/ParameterSet"/>
+<use name="FWCore/MessageLogger"/>
+<use name="FWCore/ServiceRegistry"/>
+<use name="FWCore/Utilities"/>
+<use name="FWCore/Common"/>
+<use name="DataFormats/Math"/>
 <use name="HGCal/DataFormats"/>
-<use name="Alignment/ReferenceTrajectories"/>
-<use name="Alignment/MillePedeAlignmentAlgorithm"/>
-<use name="DataFormats/CaloRecHit"/>
-<export>
-   <lib name="1"/>
-</export>
-
+<use name="HGCal/Geometry"/>
+<use name="HGCal/CondObjects" />
+<use name="HGCal/Reco"/>
+<use name="CommonTools/UtilAlgos"/>
+<library   file="*.cc" name="NtuplerPlugins">
+  <flags   EDM_PLUGIN="1"/>
+</library>
