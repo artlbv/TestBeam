@@ -74,6 +74,8 @@ private:
 
     // rechits
     std::vector<unsigned int> rechit_detid_;
+    std::vector<unsigned int> rechit_chip_;
+    std::vector<unsigned int> rechit_channel_;
     std::vector<unsigned int> rechit_module_;
     std::vector<unsigned int> rechit_layer_;
     std::vector<float> rechit_x_;
@@ -86,6 +88,8 @@ private:
     std::vector<float> rechit_energyLow_;
     std::vector<float> rechit_energyTot_;
     std::vector<float> rechit_time_;
+    std::vector<float> rechit_toaRise_;
+    std::vector<float> rechit_toaFall_;
 
 };
 
@@ -96,6 +100,8 @@ void RecHitNtupler::clearVariables(){
 
     // rechits
     rechit_detid_.clear();
+    rechit_chip_.clear();
+    rechit_channel_.clear();
     rechit_module_.clear();
     rechit_layer_.clear();
     rechit_x_.clear();
@@ -108,6 +114,8 @@ void RecHitNtupler::clearVariables(){
     rechit_energyLow_.clear();
     rechit_energyTot_.clear();
     rechit_time_.clear();
+    rechit_toaRise_.clear();
+    rechit_toaFall_.clear();
 
 };
 
@@ -147,6 +155,8 @@ RecHitNtupler::RecHitNtupler(const edm::ParameterSet& iConfig) :
 
     // rechit
     tree_->Branch("rechit_detid",&rechit_detid_);
+    tree_->Branch("rechit_chip",&rechit_chip_);
+    tree_->Branch("rechit_channel",&rechit_channel_);
     tree_->Branch("rechit_module",&rechit_module_);
     tree_->Branch("rechit_layer",&rechit_layer_);
     tree_->Branch("rechit_x",&rechit_x_);
@@ -159,6 +169,8 @@ RecHitNtupler::RecHitNtupler(const edm::ParameterSet& iConfig) :
     tree_->Branch("rechit_energyLow",&rechit_energyLow_);
     tree_->Branch("rechit_energyTot",&rechit_energyTot_);
     tree_->Branch("rechit_time",&rechit_time_);
+    tree_->Branch("rechit_toaRise",&rechit_toaRise_);
+    tree_->Branch("rechit_toaFall",&rechit_toaFall_);
 
 }
 
@@ -187,6 +199,8 @@ void RecHitNtupler::analyze(const edm::Event& event, const edm::EventSetup& setu
 
     for( auto hit : *rhits ){
 
+	if ( hit.energyHigh() < 10) continue;
+
 	// get electronics channel
 	HGCalTBElectronicsId eid( essource_.emap_.detId2eid( hit.id().rawId() ) );
 
@@ -211,8 +225,8 @@ void RecHitNtupler::analyze(const edm::Event& event, const edm::EventSetup& setu
 
 	// Fill hit info and position
 	rechit_detid_.push_back(hit.id());
-	// rechit_chip_ = eid.iskiroc();
-	// rechit_channel_ = eid.ichannel();
+	rechit_chip_.push_back(eid.iskiroc());
+	rechit_channel_.push_back(eid.ichan());
 	rechit_module_.push_back(moduleId);
 	rechit_layer_.push_back(hit.id().layer());
 
@@ -239,6 +253,8 @@ void RecHitNtupler::analyze(const edm::Event& event, const edm::EventSetup& setu
 	rechit_energyTot_.push_back( hit.energyTot() );
 
 	rechit_time_.push_back( hit.time() );
+	rechit_toaRise_.push_back( hit.toaRise() );
+	rechit_toaFall_.push_back( hit.toaFall() );
 
     } // end rechit loop
 

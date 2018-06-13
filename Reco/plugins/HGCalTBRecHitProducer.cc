@@ -156,6 +156,11 @@ void HGCalTBRecHitProducer::produce(edm::Event& event, const edm::EventSetup& iS
       recHit.setEnergy(energy*adcConv.adc_to_MIP());
       recHit.setTime(time);
     }
+
+    // set TOA values (raw, uncalibrated)
+    recHit.setToaRise(rawhit.toaRise());
+    recHit.setToaFall(rawhit.toaFall());
+
     rechits->push_back(recHit);
   }
   event.put(rechits, m_outputCollectionName);

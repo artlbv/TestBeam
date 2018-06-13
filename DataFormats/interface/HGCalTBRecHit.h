@@ -33,7 +33,7 @@ public:
 	// by default a recHit is greated with no flag
 	//	HGCalTBRecHit(const DetId& id, float energyLow, float energyHigh, float time, uint32_t flags = 0); // when constructing from digis using 2 gains for the ADC
 	HGCalTBRecHit(const DetId& id, float energy, float energyLow, float energyHigh, float energyToT, float time, uint32_t flags = 0); // when constructing from digis using 2 gains for the ADC
-	
+
 	/// get the id
 	HGCalTBDetId id() const
 	{
@@ -45,6 +45,7 @@ public:
 	float cellCenter_y;
 	float _time;
 
+	int _toaRise, _toaFall;
 
 	float energyLow() const
 	{
@@ -63,9 +64,15 @@ public:
 
 	void setTime(float time);
 
-	float time(){ 
-	  return _time; 
-	} 
+	float time(){
+	  return _time;
+	}
+
+	void setToaRise(float toaRise) { _toaRise = toaRise; } ;
+	void setToaFall(float toaFall) { _toaFall = toaFall; } ;
+
+	float toaRise() const { return _toaRise; };
+	float toaFall() const { return _toaFall; };
 
 	// set the flags
 	void setFlag(int flag)
