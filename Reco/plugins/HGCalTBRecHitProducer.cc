@@ -109,6 +109,9 @@ void HGCalTBRecHitProducer::produce(edm::Event& event, const edm::EventSetup& iS
       if( lowGain<sampleLG[it] && it>1 && it<5 ) lowGain=sampleLG[it];
       sampleT.push_back(25*it+12.5);
     }
+
+    if (highGain < 10) continue;
+
     HGCalTBRecHit recHit(rawhit.detid(), energy, lowGain, highGain, totGain, time);
     if( rawhit.isUnderSaturationForHighGain() ) recHit.setUnderSaturationForHighGain();
     if( rawhit.isUnderSaturationForLowGain() ) recHit.setUnderSaturationForLowGain();
